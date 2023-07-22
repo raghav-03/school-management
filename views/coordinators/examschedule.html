@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="css\superAdminStyleSheet\SchoolRegisterForm.css"
+    />
+    <link rel="stylesheet" href="css\superAdminStyleSheet\NavBar.css" />
+
+    <link rel="stylesheet" href="css\coordinatorStyleSheet\examDashboard.css" /
+    >
+
+    <title>Exam</title>
+
+    <style>
+      .submit-btn {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      .submit-btn:not([disabled]) {
+        cursor: pointer;
+        opacity: 1;
+      }
+
+      .toast {
+        position: fixed;
+        top: 60px;
+        right: 60px;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 2s ease-out;
+      }
+
+      .toast.success {
+        background-color: green;
+      }
+
+      .toast.error {
+        background-color: red;
+      }
+
+      .toast.show {
+        opacity: 1;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <section class="home-section">
+      <div class="text">Please Enter Exam Details</div>
+
+      <div
+        class="toast"
+        ng-class="{'show': showToast, 'success': toastColor === 'green', 'error': toastColor === 'red'}"
+      >
+        {{toastMessage}}
+      </div>
+
+      <div class="wrapper">
+        <div class="r_form_wrap">
+          <div class="r_form">
+            <form name="examForm">
+              <div class="input_wrap">
+                <label for="date">Enter Date</label>
+                <div class="input_item">
+                  <span class="icon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                  </span>
+                  <input
+                    type="date"
+                    name="date"
+                    class="input"
+                    id="date"
+                    ng-model="date"
+                    required
+                  />
+                  <span
+                    class="error"
+                    ng-show="examForm.date.$dirty && examForm.date.$invalid"
+                  >
+                    <span ng-show="examForm.date.$error.required"
+                      >Date is required.</span
+                    >
+                    <span ng-show="examForm.date.$error.date"
+                      >Invalid date format.</span
+                    >
+                  </span>
+                </div>
+              </div>
+
+              <div class="input_wrap">
+                <label for="emailaddress">Enter Time</label>
+                <div class="input_item">
+                  <span class="icon">
+                    <i class="fa-solid fa-business-time"></i>
+                  </span>
+                  <input
+                    type="text"
+                    name="time"
+                    class="input"
+                    id="time"
+                    ng-model="time"
+                    required
+                  />
+                  <span
+                    class="error"
+                    ng-show="examForm.time.$dirty && examForm.time.$invalid"
+                  >
+                    <span ng-show="examForm.time.$error.required"
+                      >Time is required.</span
+                    >
+                    <span ng-show="examForm.time.$error.pattern"
+                      >Invalid time format.</span
+                    >
+                  </span>
+                </div>
+              </div>
+
+              <div class="input_wrap">
+                <label for="password">Enter Subject</label>
+                <div class="input_item">
+                  <span class="icon">
+                    <i class="fa-solid fa-book"></i>
+                  </span>
+                  <input
+                    type="text"
+                    name="subject"
+                    class="input"
+                    id="subject"
+                    ng-model="subject"
+                    ng-pattern="/^[a-zA-Z\s]*$/"
+                    required
+                  />
+                  <div class="error" ng-show="examForm.subject.$error.required">
+                    Subject is required.
+                  </div>
+                  <div class="error" ng-show="examForm.subject.$error.pattern">
+                    Only alphabets are allowed in Subject field.
+                  </div>
+                </div>
+              </div>
+
+              <div class="input_wrap">
+                <label for="password">Enter Room Number</label>
+                <div class="input_item">
+                  <span class="icon">
+                    <i class="fa-solid fa-person-booth"></i>
+                  </span>
+                  <input
+                    type="text"
+                    name="roomnumber"
+                    class="input"
+                    id="roomnumber"
+                    ng-model="roomnumber"
+                    required
+                  />
+                  <div
+                    class="error"
+                    ng-show="examForm.roomnumber.$error.required"
+                  >
+                    Room Number is required.
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                ng-click="ExamRegister()"
+                class="submit-btn"
+                ng-disabled="examForm.$invalid"
+              >
+                Schedule Exam
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

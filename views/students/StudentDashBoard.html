@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dashboard</title>
+    <link rel="shortcut icon" href="./images/logo.png" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css\studentStyleSheet\StudentHomePage.css" />
+    <style>
+      .toast {
+        position: fixed;
+        top: 60px;
+        right: 60px;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 2s ease-out;
+      }
+
+      .toast.success {
+        background-color: green;
+      }
+
+      .toast.error {
+        background-color: red;
+      }
+
+      .toast.show {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo" title="University Management System">
+        <img src="assets\posist\posist_logo.jpg" alt="" />
+        <h2>Student<span class="danger">Dashboard</span></h2>
+      </div>
+      <div class="navbar">
+        <a href="#!/studentDashboard">
+          <span class="material-icons-sharp">home</span>
+          <h3>Home</h3>
+        </a>
+
+        <a ui-sref="StudentDashBoard.exam">
+          <span class="material-icons-sharp">grid_view</span>
+          <h3>Examination</h3>
+        </a>
+
+        <a ui-sref="StudentDashBoard.Analytics">
+          <span class="material-icons-sharp">query_stats</span>
+          <h3>Analytics</h3>
+        </a>
+
+        <a ng-click="handleStudentReportCard(studentId)">
+          <span class="material-icons-sharp">file_download</span>
+          <h3>Result</h3>
+        </a>
+
+        <a ng-click="handleAttendance(studentId)">
+          <span class="material-icons-sharp">edit_calendar</span>
+          <h3>Attendance</h3>
+        </a>
+
+        <a ng-click="logout()">
+          <span class="material-icons-sharp">logout</span>
+          <h3>Logout</h3>
+        </a>
+      </div>
+    </header>
+
+    <!-- <ui-view ng-show="currentRoute === 'StudentDashBoard.Timetable'"></ui-view> -->
+
+    <ui-view ng-show="currentRoute === 'StudentDashBoard.exam'"></ui-view>
+
+    <ui-view ng-show="currentRoute === 'StudentDashBoard.Analytics'"></ui-view>
+
+    <div
+      class="container"
+      ng-hide="currentRoute === 'StudentDashBoard.exam' || currentRoute === 'StudentDashBoard.exam' || currentRoute ==='StudentDashBoard.Analytics' "
+    >
+      <aside>
+        <div class="profile">
+          <div class="top">
+            <div class="profile-photo">
+              <img ng-src="{{image}}" />
+            </div>
+            <div class="info">
+              <p>Hey, <b>{{name}}</b></p>
+            </div>
+          </div>
+          <div class="about">
+            <h5>Class</h5>
+            <p>{{studentClass}}</p>
+            <h5>Gender</h5>
+            <p>{{gender}}</p>
+            <h5>Enrollment number</h5>
+            <p>{{enrollmentNumber}}</p>
+            <h5>School</h5>
+            <p>{{schoolName}}</p>
+            <h5>Branch</h5>
+            <p>{{branchName}}</p>
+            <h5>Coordinator</h5>
+            <p>{{coordinatorName}}</p>
+          </div>
+        </div>
+      </aside>
+
+      <div
+        class="toast"
+        ng-class="{'show': showToast, 'success': toastColor === 'green', 'error': toastColor === 'red'}"
+      >
+        {{toastMessage}}
+      </div>
+
+      <main>
+        <h1>Marks Scored</h1>
+
+        <div ng-if="marksUnavailable">
+          <h2>Your marks will be displayed soon by the coordinator!</h2>
+        </div>
+
+        <div ng-if="!marksUnavailable" class="subjects">
+          <div class="eg" ng-repeat="subject in marks">
+            <span class="material-icons-sharp">dns</span>
+            <h3>{{ subject.name }}</h3>
+
+            <h2>{{ subject.marksObtained }}/{{ subject.totalMarks }}</h2>
+
+            <div class="number">
+              <p>
+                {{ (subject.marksObtained/subject.totalMarks)*100 | number:2 }}%
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="announcements">
+            <h1>Class Announcements</h1>
+
+            <div ng-if="messages.length === 0">
+              <h2>there are no current announcements yet!</h2>
+            </div>
+
+            <div ng-if="messages.length > 0" class="updates">
+              <div
+                class="message"
+                ng-repeat="message in messages | orderBy: '-createdAt' | limitTo: 3"
+              >
+                <p><b>{{ message.title }}</b> {{ message.content }}</p>
+                <small class="text-muted"
+                  >{{ message.createdAt | date:'dd/MM/yyyy h:mm a' }}</small
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
